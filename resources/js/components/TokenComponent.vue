@@ -55,18 +55,17 @@
                 axios.post('/saveToken',{token: this.description})
                 .then(function (response) {
                     currentObj.output = response.data;
-                })
+                    axios.post('/getToken')
+                    .then(function (response) {
+                        currentObj.token = response.data;
+                    })
+                    .catch(function (error) {
+                        currentObj.output = error;
+                    });
+                    })
                 .catch(function (error) {
                     currentObj.output = error;
                 });
-                axios.post('/getToken')
-                .then(function (response) {
-                    currentObj.token = response.data;
-                })
-                .catch(function (error) {
-                    currentObj.output = error;
-                });
-                window.alert(this.token)
             }
         }
     }

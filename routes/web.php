@@ -21,6 +21,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
+Route::post('saveToken','TokenController@SaveToken');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::post('getToken','TokenController@GetToken');

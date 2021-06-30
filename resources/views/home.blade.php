@@ -13,8 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    {{ __('You are logged in!') }}
+                    @if (Auth::check())
+                        <token-component></token-component>
+                    @endif
                 </div>
             </div>
         </div>
