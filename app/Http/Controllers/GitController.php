@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Crypt;
 use Github\Client;
 
 class GitController extends Controller
@@ -19,6 +20,12 @@ class GitController extends Controller
         $this->index();
     }
 
+    public function GetRepos(){
+        $user = User::Find(Auth::user()->id);
+        $this->SeeRepos(Crypt::decryptString($user->git_token));
+        return $this->index();
+
+    }
     public function SeeRepos($token)
     {
         $this->client = new Client();
@@ -28,11 +35,19 @@ class GitController extends Controller
     public function index()
     {
         try {
-        $repos = $this->client->api('current_user')->starring()->all();
-        dd($repos);
-        return View::make('idk', ['idk' => $repos]);
+            $repos = $this->client->api('current_user')->starring()->all();
+            return $this->RepoAsJson($repos);
         } catch (\RuntimeException $e) {
-        $this->handleAPIException($e);
+            return $e->message;
         }
+    }
+
+    private function RepoAsJson($repos)
+    {
+        $array = array();
+        foreach($repos as $repo){
+            array_push($array,array($repo['name'],$repo['html_url']));
+        }
+        return $array;
     }
 }

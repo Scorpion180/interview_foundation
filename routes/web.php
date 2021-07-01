@@ -24,3 +24,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::post('saveToken','TokenController@SaveToken');
 
 Route::post('getToken','TokenController@GetToken');
+
+Route::post('/repos', 'GitController@GetRepos');
