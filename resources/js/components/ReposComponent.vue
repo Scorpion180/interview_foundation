@@ -7,10 +7,7 @@
                 </b-col>
             </b-row>
         </b-container>
-         <b-toast id="toast" title="ERROR" static no-auto-hide v-if="toast">
-            {{output}}
-        </b-toast>
-        <div  v-if="data && !toast">
+        <div  v-if="data">
             <h2>{{output}}</h2>
         <b-list-group>
             <b-list-group-item class="d-flex justify-content-between align-items-center" v-for="value in data" :key="value">
@@ -23,3 +20,59 @@
         </div>
     </div>
 </template>
+<script>
+    export default {
+        mounted(){
+            let currentObj = this;
+                axios.post('/getToken')
+                .then(function (response) {
+                    currentObj.token = response.data;
+                })
+                .catch(function (error) {
+                    currentObj.output = error;
+                });
+        },
+        data() {
+            return {
+              token: null,
+              data: [],
+              output: "",
+            };
+        },
+        computed: {
+            isDisabled() {
+                return this.token == null;
+            }
+        },
+        methods:{
+            getData: function(e){
+                e.preventDefault()
+                let currentObj = this;
+                currentObj.output = "Getting your data";
+                currentObj.data = []
+                axios.post('/repos')
+                .then(function (response) {
+                    console.log(response.data)
+                    if(response.data.includes('Error') || response.data.includes('500')){
+                        currentObj.$toasted.show(response.data, {
+                        duration: 2000,
+                        position: "top-left",
+                        });
+                        currentObj.output = ""
+                    }
+                    else{
+                    currentObj.data = response.data
+                    currentObj.output = ""
+                    }
+                })
+                .catch(function (error) {
+                    currentObj.$toasted.show(error, {
+                    duration: 2000,
+                    position: "top-left",
+                    });
+                    currentObj.output = ""
+                });
+            },
+        }
+}
+</script>

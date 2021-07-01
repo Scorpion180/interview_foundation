@@ -15,6 +15,7 @@
                     @endif
                     @if (Auth::check())
                         <token-component></token-component>
+                        <starred-component><starred-component>
                     @endif
                 </div>
             </div>

@@ -8,6 +8,8 @@
 
  window.Vue = require('vue');
  Vue.use(require('bootstrap-vue'));
+ import Toasted from 'vue-toasted';
+ Vue.use(Toasted)
  /**
   * The following block of code may be used to automatically register your
   * Vue components. It will recursively scan this directory for the Vue
@@ -20,6 +22,7 @@
  // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
  
  Vue.component('token-component', require('./components/TokenComponent.vue').default);
+ Vue.component('starred-component', require('./components/ReposComponent.vue').default);
  Vue.component('example-component', require('./components/ExampleComponent.vue').default);
  
  /**

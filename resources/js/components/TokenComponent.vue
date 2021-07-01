@@ -64,7 +64,6 @@
                 
                 axios.post('/saveToken',{token: currentObj.form.token})
                 .then(function (response) {
-                    window.alert(response.data)
                 axios.post('/getToken')
                 .then(function (response) {
                     currentObj.token = response.data;
